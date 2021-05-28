@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  color: white;
+  background-image: linear-gradient(
+    to right bottom,
+    #0d80e0,
+    #6484eb,
+    #9488f1,
+    #be8af4,
+    #e38df3
+  );
+}
+
+.fancy-font {
+  font-family: "Indie Flower", cursive, "Times New Roman", serif, sans-serif;
+}
+
+.small-font {
+  font-size: 30px;
+}
+.large-font {
+  font-size: 80px;
+}
+
+.splash-container {
+  margin: 0 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.splash-child {
+  text-align: center;
+}
+
+.quiz-container {
+  margin: 0 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quiz-child {
+}
+
+.quiz-submit-button-container {
+  text-align: center;
+}
+
+.cute-input {
+  padding: 11px;
+  font-size: 25px;
+  background-color: white;
+  color: #0d81e0;
+  border-radius: 50px;
+  text-align: center;
+  font-family: "Indie Flower", cursive, "Times New Roman", serif, sans-serif;
+}
+.cute-input:focus {
+  outline: none;
+  box-shadow: 0px 0px 15px #e48df3;
+}
+
+.cute-button {
+  background-color: #0d81e0;
+  border-radius: 50px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 25px;
+  padding: 8px 16px;
+  text-decoration: none;
+  letter-spacing: 2px;
+}
+.cute-button:hover {
+  background-color: #9488f1;
+  box-shadow: 0px 0px 20px 0px #e48df3;
+}
+.cute-button:active {
+  position: relative;
+  top: 1px;
+}
