@@ -15,17 +15,20 @@ const questions = [
         {
           id: "B",
           answerText: "Politely ask them what the quarrel is about and see if you can help them sort out their differences.",
-          positiveTribes: ["imperius", "aimo"]
+          positiveTribes: ["imperius", "aimo"],
+          negativeTribes: []
         },
         {
           id: "C",
           answerText: "Move in between them, hold out your arms, and force them to stop.",
-          positiveTribes: ["quetzali", "polaris"]
+          positiveTribes: ["quetzali", "polaris"],
+          negativeTribes: []
         },
         {
           id: "D",
           answerText: "Starting taking bets on who is going to win",
-          positiveTribes: ["yaddak, luxidoor"]
+          positiveTribes: ["yaddak, luxidoor"],
+          negativeTribes: []
     
         },
         {
@@ -37,19 +40,22 @@ const questions = [
           {
             id: "F",
             answerText: "Ask a bystander what is going on and how the fight started",
-            positiveTribes: ["zebasi", "aimo", "hoodrick" , "kickoo"]
+            positiveTribes: ["zebasi", "aimo", "hoodrick" , "kickoo"],
+            negativeTribes: []
             
           },
           {
             id: "G",
             answerText: "Take the cow when neither of them are looking",
-            positiveTribes: ["elyrion", "oumaji", "yadakk"]
+            positiveTribes: ["elyrion", "oumaji", "yadakk"],
+            negativeTribes: []
             
           },
           {
             id: "H",
             answerText: "You have never seen a cow before and have no idea what the fuss is about.",
-            positiveTribes: ["aquarion", "cymanti"]
+            positiveTribes: ["aquarion", "cymanti"],
+            negativeTribes: []
             
           } 
         ] 
@@ -65,11 +71,12 @@ const questions = [
             id: "A",
             answerText: "To be in familiar situations.",
             positiveTribes: ["imperius", "aimo" , "queztali" , "xinxi" , "vengir" , "hoodrick" , "oumaji" , "bardur" , "zebasi" , "luxidoor"],
-              },
+            negativeTribes: [] },
             {
             id: "B",
             answerText: "New experiences.",
-            positiveTribes: ["aquarion", "elyrion" ,"polaris" , "cymanti"]
+            positiveTribes: ["aquarion", "elyrion" ,"polaris" , "cymanti"],
+            negativeTribes: []
             }
                   
         ]
@@ -78,18 +85,20 @@ const questions = [
         id: 3,
         question:
           "Question 3: The tribe moon festival is tomorrow and you want to make your family’s favorite recipe to help celebrate. The dish is a big hit and everyone admires how ____ the dish is.",
-        questionType: "pickAny",
+        questionType: "multiple choice",
         answers: 
         [
           {
             id: "A",
             answerText: "Sweet",
-            tribes: ["hoodrick", "luxidoor" ,"imperius", "bardur"],
+            positiveTribes: ["hoodrick", "luxidoor" ,"imperius", "bardur"],
+            negativeTribes: []
             },
           {
             id: "B",
             answerText: "Crunchy",
-            tribes: ["imperius, polaris"],
+            positiveTribes: ["imperius, polaris"],
+            negativeTribes: []
           },
           {
             id: "C",
@@ -100,33 +109,38 @@ const questions = [
           {
             id: "D",
             answerText: "Sticky",
-            tribes: ["Luxidoor, oumaji"],
+            positiveTribes: ["Luxidoor, oumaji"],
+            negativeTribes: []
           },
           {
             id: "E",
-            answerText: "Tangy ",
+            answerText: "Tangy",
             positiveTribes: ["yadakk", "xinxi"],
             negativeTribes: ["cymanti"]
           },
           {
             id: "F",
             answerText: "Salty",
-            tribes: ["aquarion"]           
+            positiveTribes: ["aquarion"],
+            negativeTribes: []     
           },
           {
             id: "G",
             answerText: "Pungent",
-            tribes: ["cymanti" ,"vengir"]           
+            positiveTribes: ["cymanti" ,"vengir"],
+            negativeTribes: []          
           },
           {
             id: "H",
-            answerText: "Spicy ",
-            tribes: ["aimo"]           
+            answerText: "Spicy",
+            tpositiveTribes: ["aimo"] ,
+            negativeTribes: []         
           },
           {
             id: "I",
             answerText: "Colorful",
-            tribes: ["elyrion" ,"luxidoor"]           
+            positiveTribes: ["elyrion" ,"luxidoor"] ,
+            negativeTribes: []          
           }
         ],
       },
@@ -134,33 +148,38 @@ const questions = [
         id: 4,
         question: 
         "Question 4: You need to travel quickly to a battle zone to strike fast, then dash away. Would you chose to ride...",
-        questionType: "pickAny",
+        questionType: "multiple choice",
         answers: 
         [
             {
             id: "A",
             answerText: "An animal with horns.",
-            tribes: ["hoodrick", "vengir" , "yadakk" , "xinxi" , "elyrion"],
+            positiveTribes: ["hoodrick", "vengir" , "yadakk" , "xinxi" , "elyrion"],
+            negativeTribes: []
               },
             {
             id: "B",
             answerText: "An animal with tusks.",
-            tribes: ["luxidoor", "polaris"]
+            positiveTribes: ["luxidoor", "polaris"],
+            negativeTribes: []
             },
             {
             id: "C",
             answerText: "An animal with hooves.",
-            tribes: ["imperius", "elyrion" ,"xinxi" , "oumani", "aimo", "hoodrick", "zebasi"],
+            positiveTribes: ["imperius", "elyrion" ,"xinxi" , "oumani", "aimo", "hoodrick", "zebasi"],
+            negativeTribes: []
             },
             {
             id: "D",
             answerText: "An animal with paws.",
-            tribes: ["bardur", "kickoo"],
+            positiveTribes: ["bardur", "kickoo"],
+            negativeTribes: []
             },
             {
             id: "D",
             answerText: "None of the above.",
-            tribes: ["queztali", "aquarion" , "cymanti"],
+            positiveTribes: ["queztali", "aquarion" , "cymanti"],
+            negativeTribes: []
             }
         ]
        },
@@ -174,32 +193,38 @@ const questions = [
                 {
                 id: "A",
                 answerText: "Smile and tell them your new haircut is lovely, then go home and cry.",
-                tribes: ["xinxi", "oumaji"],
+                positiveTribes: ["xinxi", "oumaji"],
+                negativeTribes: []
                   },
                 {
                 id: "B",
                 answerText: "Tell them you don't like it and ask them to fix it, but still pay in the end.",
-                tribes: ["zebasi", "kickoo", "elyrion" , "imperius"]
+                positiveTribes: ["zebasi", "kickoo", "elyrion" , "imperius"],
+                negativeTribes: []
                 },
                 {
                 id: "C",
-                answerText: "Say nothing, pay, then write a nasty review on social media",
-                tribes: ["Polaris", "hoodrick" ,"aquarion"]
+                answerText: "Say nothing, pay, then write a nasty review on social media.",
+                positiveTribes: ["Polaris", "hoodrick" ,"aquarion"],
+                negativeTribes: []
                 },
                 {
                     id: "D",
-                    answerText: "Refuse to pay and go elsewhere to have it fixed ",
-                    tribes: ["bardur", "vengir", "quetzali", "cymanti"]
+                    answerText: "Refuse to pay and go elsewhere to have it fixed.",
+                    positiveTribes: ["bardur", "vengir", "quetzali", "cymanti"],
+                    negativeTribes: []
                 },
                 {
                     id: "E",
-                    answerText: "Fire them. I own the hair salon",
-                    tribes: ["luxidoor", "yadakk"]
+                    answerText: "Fire them. I own the hair salon.",
+                    positiveTribes: ["luxidoor", "yadakk"],
+                    negativeTribes: []
                 },
                 {
                     id: "F",
-                    answerText: "What’s a hairdresser? I don’t have any hair",
-                    tribes: ["aimo"]
+                    answerText: "What’s a hairdresser? I don’t have any hair.",
+                    positiveTribes: ["aimo"],
+                    negativeTribes: []
                 }
                       
             ]
@@ -208,7 +233,7 @@ const questions = [
         id: 7,
         question: 
         "Question 7: I am very afraid of ...(check all that apply)",
-        questionType: "pickAny",
+        questionType: "multiplechoice",
         answers: 
         [
             {
@@ -228,28 +253,30 @@ const questions = [
             {
             id: "c",
             answerText: "Bugs.",
+            positiveTribes: [],
             negativeTribes: ["cymanti"]
             },
             {
             id: "D",
-            answerText: "Chaos",
+            answerText: "Chaos.",
+            positiveTribes: [],
             negativeTribes: ["imperius" ,"zebasi"]
             },
             {
             id: "E",
-            answerText: "Getting lost",
+            answerText: "Getting lost.",
             positiveTribes: ["elyrion"],
             negativeTribes: ["hoodrick"]
             },
             {
             id: "F",
-            answerText: "Being poor",
+            answerText: "Being poor.",
             positiveTribes: ["luxidoor"],
             negativeTribes: ["aquarion", "oumaji", "vengir"]
             },
             {
-            id: "F",
-            answerText: "drowning",
+            id: "G",
+            answerText: "Drowning.",
             positiveTribes: ["polaris"],
             negativeTribes: ["aquarion", "kickoo"]
             }
@@ -267,11 +294,13 @@ const questions = [
             id: "A",
             answerText: "something that blends in with what others are wearing",
             positiveTribes: ["imperius", "aimo" , "queztali" , "xinxi" , "vengir" , "hoodrick" , "oumaji" , "bardur" , "zebasi" , "luxidoor"],
+            negativeTribes: []
               },
             {
             id: "B",
             answerText: "clothes that stand out",
-            positiveTribes: ["aquarion", "elyrion" ,"polaris" , "cymanti"]
+            positiveTribes: ["aquarion", "elyrion" ,"polaris" , "cymanti"],
+            negativeTribes: []
             }
                   
         ]
@@ -287,26 +316,31 @@ const questions = [
             id: "A",
             answerText: "warm and dry",
             positiveTribes: ["oumaji" , "zebasi"],
+            negativeTribes: []
               },
             {
             id: "B",
             answerText: "warm and wet",
-            positiveTribes: ["kickoo", "queztali" ,"luxidoor"]
+            positiveTribes: ["kickoo", "queztali" ,"luxidoor"],
+            negativeTribes: []
             },
             {
             id: "C",
             answerText: "mild and temperate",
-            positiveTribes: ["imperius", "hoodrick", "elyrion" ,"cymanti"]
+            positiveTribes: ["imperius", "hoodrick", "elyrion" ,"cymanti"],
+            negativeTribes: []
             },
             {
             id: "D",
             answerText: "cold and dry",
-            positiveTribes: ["xinxi", "aimo" ,"yadakk", "polaris" ,"vengir"]
+            positiveTribes: ["xinxi", "aimo" ,"yadakk", "polaris" ,"vengir"],
+            negativeTribes: []
             },
             {
             id: "E",
             answerText: "cold and wet",
-            positiveTribes: ["bardur", "aquarion" ]
+            positiveTribes: ["bardur", "aquarion" ],
+            negativeTribes: []
             }
                   
         ]
@@ -322,31 +356,37 @@ const questions = [
             id: "A",
             answerText: "Get rid of the garden all together and avoid eye contact with your neighbor.",
             positiveTribes: ["xinxi"],
+            negativeTribes: []
               },
             {
             id: "B",
             answerText: "Put a sign out in front of the garden that says, 'Not Your Fruit,' to drop them a hint.",
-            positiveTribes: ["hoodrick", "polaris"]
+            positiveTribes: ["hoodrick", "polaris"],
+            negativeTribes: []
             },
             {
             id: "C",
             answerText: "Let it go. Life's too short.",
-            positiveTribes: ["elyrion", "aimo"]
+            positiveTribes: ["elyrion", "aimo"],
+            negativeTribes: []
             },
             {
             id: "D",
             answerText: "Build a high wall around the garden with locked gate.",
-            positiveTribes: ["luxidoor" ,"quetzali"]
+            positiveTribes: ["luxidoor" ,"quetzali"],
+            negativeTribes: []
             },
             {
             id: "E",
             answerText: "Pound on your neighbor’s door, demand they leave your garden alone or you’ll smash their windows.",
-            positiveTribes: ["bardur", "vengir" , "cymanti" ]
+            positiveTribes: ["bardur", "vengir" , "cymanti" ],
+            negativeTribes: []
             },
             {
             id: "F",
             answerText: "The next time you see your neighbor, talk to them about the missing fruit. Tell the neighbor you have plenty. All they have to do is ask if they want something from your garden.",
             positiveTribes: ["zebasi", "kickoo" , "imperius" ],
+            negativeTribes: []
         },
       ],
     },
