@@ -141,7 +141,7 @@ const questions = [
       {
         id: "H",
         answerText: "Spicy.",
-        tpositiveTribes: ["aimo"],
+        positiveTribes: ["aimo"],
         negativeTribes: [],
       },
       {
@@ -191,7 +191,7 @@ const questions = [
         negativeTribes: [],
       },
       {
-        id: "D",
+        id: "E",
         answerText: "None of the above.",
         positiveTribes: ["queztali", "aquarion", "cymanti"],
         negativeTribes: [],
