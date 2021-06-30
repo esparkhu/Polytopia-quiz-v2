@@ -111,6 +111,8 @@ const buildQuizHTML = function () {
   nextQuestionButton.addEventListener("click", () =>
     handleNextQuestionButton()
   );
+
+  window.scrollTo(0, 0);
 };
 
 const handleSelectAnswer = function (evt) {
@@ -141,8 +143,6 @@ const handleSelectAnswer = function (evt) {
       currentSelections.push(target);
     }
   }
-
-  // iterate through currentSelections, adding or removing the selected class to classList as necessary
   let answersContainer = document.querySelector("#answersContainer");
 
   for (let child of answersContainer.children) {
