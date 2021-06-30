@@ -230,6 +230,29 @@ const questions = [
             ]
     },
     {
+        id: 6,
+        question: 
+        "Question 6: You agree to an alliance with a neighbor. You lend your ally some resources. When the payment is due, your ally offers to either pay you back in full, or a bit more next turn. Would you rather...",
+        questionType: "pick1",
+        answers: 
+        [
+            {
+            id: "A",
+            answerText: "have those resources now ",
+            positiveTribes: ["imperius", "bardur", "kickoo", "zebasi", "luxidoor", "cymanti"],
+            negativeTribes: []
+            
+            },
+            {
+            id: "B",
+            answerText: "Wait a bit for more resources later",
+            positiveTribes: ["xinsi", "aimo", "aquarion" ,"vengir", "oumaji","queztali", "hoodrick", "elyrion", "polaris", "yadakk"],
+            negativeTribes: []
+            }
+                  
+        ]
+    },
+    {
         id: 7,
         question: 
         "Question 7: I am very afraid of ...(check all that apply)",
