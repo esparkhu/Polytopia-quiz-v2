@@ -1,305 +1,278 @@
 import questions from "./questions.js";
+import tribeCharacteristics from "./tribeCharacteristics.js";
+import {
+  makeElement,
+  splashHTML,
+  fancyTribeConversion,
+  determineIsQuizOver,
+  creditsHTML,
+  calculateResults,
+} from "./utils.js";
 
-const appContainer = document.querySelector("#appContainer");
-let selectedAnswers = [];
-let test;
+const appContainerDiv = document.querySelector("#appContainer");
+let startButton;
+let usersName;
+let currentQuestion = 1;
+let currentQuestionType;
+let savedAnswers = {};
+let currentSelections = [];
+let resultTribe;
 
-const appStart = () => {
-  console.log("starting app");
-  let userInfo = getUserInfo();
+const buildQuizHTML = function () {
+  let currentQuestionTemplate = getCurrentQuestionFromTemplate();
+  currentQuestionType = currentQuestionTemplate.questionType;
 
-  if (userInfo) {
-    console.log("found userInfo :>> ", userInfo);
-
-    if (userInfo.inProgress) {
-      return buildDisplayQuiz();
-    } else {
-      return buildDisplayResults();
-    }
-  }
-  return buildDisplayIntro();
-};
-
-const buildDisplayIntro = () => {
-  appContainer.innerHTML = `<div class="splash-container">
-        <div class="splash-child">
-          <h1 class="large-font">Which Polytopia tribe are you in?</h1>
-          <p class="small-font">
-            Let's find out! Type your name and press the button to begin the
-            quiz.
-          </p>
-          <form>
-            <input
-              type="text"
-              placeholder="your name"
-              name="userName"
-              id="nameInput"
-              required
-              class="cute-input"
-            />
-            <button type="submit" class="cute-button" id="beginButton">
-              begin!
-            </button>
-          </form>
-        </div>
-      </div>`;
-
-  const beginButton = document.querySelector("#beginButton");
-
-  beginButton.addEventListener("click", handleBeginQuiz);
-
-  return;
-};
-
-const buildDisplayQuiz = () => {
-  appContainer.innerHTML = ``;
-
-  const currentQuestionNumber = getCurrentQuestionNumber();
-
-  let quizContainer = buildQuestionAnswers(currentQuestionNumber);
-
-  appContainer.appendChild(quizContainer);
-
-  const questionButton = document.querySelector("#questionButton");
-  const answerGroup = document.querySelector("#answersDiv");
-  console.log("answerGroup :>> ", answerGroup);
-
-  const isFinalQuestion = currentQuestionNumber === questions.length;
-
-  const buttonHandler = !isFinalQuestion
-    ? handleNextQuestion
-    : handleSubmitQuiz;
-
-  questionButton.addEventListener("click", buttonHandler);
-  answerGroup.addEventListener("click", selectionHandler);
-
-  return;
-};
-
-const buildQuestionAnswers = (questionNumber) => {
-  let currentQuestionObject = getCurrentQuestionObject(questionNumber);
-  console.log(`currentQuestionObject :>> `, currentQuestionObject);
-
-  const isFinalQuestion = questionNumber === questions.length;
-  const buttonText = isFinalQuestion ? "Submit Quiz" : "Next Question";
-
-  let quizContainer = document.createElement("div");
-  quizContainer.id = "quizContainer";
-
-  let answersDiv = document.createElement("div");
-  answersDiv.id = "answersDiv";
-
-  for (let answerObject of currentQuestionObject.answers) {
-    let answerDiv = document.createElement("div");
-    answerDiv.id = answerObject.id;
-    answerDiv.innerHTML = `
-      <input type="radio" name="question${questionNumber}" value="${answerObject.id}">
-      ${answerObject.answerText}
-    `;
-
-    answersDiv.appendChild(answerDiv);
-  }
-
-  const questionTypeNotifier =
-    currentQuestionObject.questionType === "pick1"
-      ? " Please pick 1."
-      : " Please pick any.";
-  const questionDiv = document.createElement("div");
-  questionDiv.append(currentQuestionObject.question + questionTypeNotifier);
-
-  const buttonDiv = document.createElement("div");
-  const nextButton = document.createElement("button");
-  nextButton.id = "questionButton";
-  nextButton.textContent = buttonText;
-  buttonDiv.appendChild(nextButton);
-
-  const errorDiv = document.createElement("div");
-  errorDiv.id = "errorMessage";
-
-  const errorParagraph = document.createElement("p");
-  errorDiv.appendChild(errorParagraph);
-
-  errorDiv.display = false;
-
-  quizContainer.appendChild(questionDiv);
-  quizContainer.appendChild(answersDiv);
-  quizContainer.appendChild(errorDiv);
-  quizContainer.appendChild(buttonDiv);
-
-  return quizContainer;
-};
-
-const buildDisplayResults = () => {
-  console.log("display results!");
-
-  appContainer.innerHTML = ``;
-  appContainer.innerHTML = `
-    <p>results are here!</p>
-    <div><button id="resetQuiz">Reset Quiz</button></div>
-  `;
-
-  const resetButton = document.querySelector("#resetQuiz");
-  resetButton.addEventListener("click", handleResetQuiz);
-};
-
-const handleBeginQuiz = (evt) => {
-  evt.preventDefault();
-
-  const nameInput = document.querySelector("#nameInput");
-
-  console.log(`${nameInput.value} has begun the quiz!`);
-
-  saveUserInfo({
-    name: nameInput.value,
-    inProgress: true,
-    currentQuestionNumber: 1,
-    answers: [],
-    result: "",
+  let setContainerDiv = makeElement({
+    element: "div",
+    id: "setContainer",
+    classes: ["set-container"],
   });
+  let imageContainerDiv = makeElement({
+    element: "div",
+    classes: ["image-container"],
+  });
+  let imageEl = makeElement({
+    element: "img",
+    classes: ["question-image"],
+  });
+  imageEl.alt = "blank";
+  imageEl.src = `./images/question${currentQuestion}.png`;
 
-  buildDisplayQuiz();
-};
+  imageContainerDiv.appendChild(imageEl);
 
-const selectionHandler = (evt) => {
-  console.log("clicked on answersContainer");
-  console.log(evt.target.id);
-  const target = evt.target.id;
+  let questionContainerDiv = makeElement({
+    element: "div",
+    id: "questionContainer",
+    classes: ["question-container"],
+  });
+  let questionTextDiv = makeElement({
+    element: "div",
+    id: "questionText",
+    classes: ["question-text"],
+  });
+  questionTextDiv.innerText = currentQuestionTemplate.question;
 
-  let questionType = getCurrentQuestionType();
-  console.log("questionType :>> ", questionType);
+  let questionTypeDiv = makeElement({
+    element: "div",
+    id: "questionType",
+    classes: ["question-type"],
+  });
+  questionTypeDiv.innerText =
+    currentQuestionType === "pick1"
+      ? "(choose 1 answer)"
+      : "(choose all answer that apply)";
 
-  if (questionType === "pick1") {
-    if (selectedAnswers.includes(target)) {
-      selectedAnswers = [];
-    } else if (selectedAnswers.length === 0) {
-      selectedAnswers.push(target);
-    } else if (selectedAnswers.length > 0) {
-      setErrorMessage("You may only select 1 answer!");
-    }
+  questionContainerDiv.appendChild(questionTextDiv);
+  questionContainerDiv.appendChild(questionTypeDiv);
+
+  let answersContainerDiv = makeElement({
+    element: "div",
+    id: "answersContainer",
+    classes: ["answers-container"],
+  });
+  for (let answerChoice of currentQuestionTemplate.answers) {
+    let answerChoiceDiv = makeElement({
+      element: "div",
+      id: answerChoice.id,
+      classes: ["answer-choice", "answer-text"],
+    });
+    answerChoiceDiv.innerText = answerChoice.answerText;
+
+    answersContainerDiv.appendChild(answerChoiceDiv);
   }
 
-  if (questionType === "pickAny") {
-    if (!selectedAnswers.includes(target)) {
-      selectedAnswers.push(target);
-    } else if (selectedAnswers.includes(target)) {
-      if (selectedAnswers.length === 1) {
-        selectedAnswers = [];
+  let buttonContainerDiv = makeElement({
+    element: "div",
+    id: "buttonContainer",
+    classes: ["button-container"],
+  });
+  let buttonEl = makeElement({
+    element: "button",
+    id: "nextQuestionButton",
+    classes: ["cute-button"],
+  });
+  buttonEl.innerText = "Next Question";
+
+  buttonContainerDiv.appendChild(buttonEl);
+
+  setContainerDiv.appendChild(imageContainerDiv);
+  setContainerDiv.appendChild(questionContainerDiv);
+  setContainerDiv.appendChild(answersContainerDiv);
+  setContainerDiv.appendChild(buttonContainerDiv);
+
+  appContainerDiv.innerHTML = "";
+  appContainerDiv.appendChild(setContainerDiv);
+
+  answersContainerDiv.addEventListener("click", handleSelectAnswer);
+
+  let nextQuestionButton = document.querySelector("#nextQuestionButton");
+  nextQuestionButton.addEventListener("click", () =>
+    handleNextQuestionButton()
+  );
+};
+
+const handleSelectAnswer = function (evt) {
+  console.log("evt.target.id :>> ", evt.target.id);
+  const target = evt.target.id;
+  if (target === "answersContainer") return;
+
+  if (currentQuestionType === "pick1") {
+    if (currentSelections.includes(target)) {
+      currentSelections = [];
+    } else {
+      currentSelections = [];
+      currentSelections.push(target);
+    }
+    console.log("currentSelections after selecting :>> ", currentSelections);
+  }
+
+  if (currentQuestionType === "pickAny") {
+    if (currentSelections.includes(target)) {
+      if (currentSelections.length === 1) {
+        currentSelections = [];
       } else {
-        selectedAnswers = selectedAnswers.filter((answer) => {
+        currentSelections = currentSelections.filter((answer) => {
           if (answer !== target) {
             return answer;
           }
         });
       }
+    } else {
+      currentSelections.push(target);
+    }
+    console.log("currentSelections after selecting :>> ", currentSelections);
+  }
+
+  // iterate through currentSelections, adding or removing the selected class to classList as necessary
+  let answersContainer = document.querySelector("#answersContainer");
+  console.log("answersContainer :>> ", answersContainer);
+
+  for (let child of answersContainer.children) {
+    if (!currentSelections.includes(child.id)) {
+      child.classList = "answer-choice answer-text";
     }
   }
 
-  console.log("selectedAnswers :>> ", selectedAnswers);
-};
-
-const setErrorMessage = (message) => {
-  const errorDiv = document.querySelector("#errorMessage");
-
-  errorDiv.firstChild.innerText = message;
-  errorDiv.display = true;
-
-  setTimeout(() => {
-    errorDiv.firstChild.innerText = "";
-    errorDiv.display = false;
-  }, 3000);
-};
-
-const handleNextQuestion = () => {
-  console.log("go to next question!");
-
-  if (selectedAnswers.length === 0) {
-    return setErrorMessage("Please select at least 1 answer!");
+  for (let selection of currentSelections) {
+    let answerElement = document.querySelector(`#${selection}`);
+    answerElement.classList = "answer-choice answer-text selected";
   }
-
-  saveAnswer();
-  increaseQuestionNumber();
-  return buildDisplayQuiz();
 };
 
-const handleSubmitQuiz = () => {
-  console.log("finished the quiz! go to results screen!");
+const buildResultsHTML = function () {
+  console.log("built the quiz!");
+  console.log("savedAnswers :>> ", savedAnswers);
 
-  markQuizComplete();
-
-  return buildDisplayResults();
-};
-
-const handleResetQuiz = () => {
-  window.localStorage.removeItem("polytopiaTribeQuiz");
-  return buildDisplayIntro();
-};
-
-const getUserInfo = () => {
-  const userInfoJSON = window.localStorage.getItem("polytopiaTribeQuiz");
-  if (userInfoJSON) {
-    return JSON.parse(userInfoJSON);
-  }
-  return null;
-};
-
-const saveUserInfo = (userInfoObject) => {
-  window.localStorage.removeItem("polytopiaTribeQuiz");
-  window.localStorage.setItem(
-    "polytopiaTribeQuiz",
-    JSON.stringify(userInfoObject)
-  );
-  return;
-};
-
-const getCurrentQuestionObject = (questionNumber) => {
-  const currentQuestionObject = questions.find(
-    (question) => question.id === questionNumber
-  );
-  return currentQuestionObject;
-};
-
-const getCurrentQuestionNumber = () => {
-  const userInfo = getUserInfo();
-  return userInfo.currentQuestionNumber;
-};
-
-const getCurrentQuestionType = () => {
-  const questionNumber = getCurrentQuestionNumber();
-  const currentQuestion = getCurrentQuestionObject(questionNumber);
-  console.log("currentQuestion :>> ", currentQuestion);
-
-  return currentQuestion.questionType;
-};
-
-const saveAnswer = () => {
-  let userInfo = getUserInfo();
-
-  userInfo.answers.push({
-    question: questions[userInfo.currentQuestionNumber].id,
-    answer: "hi",
+  let setContainerDiv = makeElement({
+    element: "div",
+    id: "setContainer",
+    classes: ["set-container"],
   });
 
-  saveUserInfo(userInfo);
+  let resultsHeaderDiv = makeElement({
+    element: "div",
+    classes: ["results-header"],
+  });
+  let resultsHeaderParagraph = makeElement({
+    element: "p",
+  });
+  resultsHeaderParagraph.innerText = `${usersName} is in the ${fancyTribeConversion[resultTribe]} tribe!`;
+
+  resultsHeaderDiv.appendChild(resultsHeaderParagraph);
+
+  let resultImageContainerDiv = makeElement({
+    element: "div",
+    id: "resultImageContainer",
+    classes: ["result-image-container"],
+  });
+  let resultImageEl = makeElement({
+    element: "img",
+    classes: ["result-image"],
+  });
+  resultImageEl.src = `./images/${resultTribe}.png`;
+  resultImageEl.alt = "blank";
+
+  resultImageContainerDiv.appendChild(resultImageEl);
+
+  let tribeDescriptionContainerDiv = makeElement({
+    element: "div",
+    id: "tribeDescriptionContainer",
+    classes: ["tribe-description-container"],
+  });
+  let descriptionHeaderEl = makeElement({
+    element: "h2",
+    classes: ["description-header"],
+  });
+  descriptionHeaderEl.innerText = `About The ${fancyTribeConversion[resultTribe]} Tribe:`;
+
+  let descriptionBodyEl = makeElement({
+    element: "p",
+    classes: ["description-body"],
+  });
+  descriptionBodyEl.innerHTML = tribeCharacteristics[resultTribe];
+
+  tribeDescriptionContainerDiv.appendChild(descriptionHeaderEl);
+  tribeDescriptionContainerDiv.appendChild(descriptionBodyEl);
+
+  let creditsContainerDiv = makeElement({
+    element: "div",
+    id: "creditsContainer",
+    classes: ["credits-container"],
+  });
+  creditsContainerDiv.innerHTML = creditsHTML;
+
+  setContainerDiv.appendChild(resultsHeaderDiv);
+  setContainerDiv.appendChild(resultImageContainerDiv);
+  setContainerDiv.appendChild(tribeDescriptionContainerDiv);
+  setContainerDiv.appendChild(creditsContainerDiv);
+
+  appContainerDiv.innerHTML = "";
+  appContainerDiv.appendChild(setContainerDiv);
 };
 
-const increaseQuestionNumber = () => {
-  let userInfo = getUserInfo();
+const handleNextQuestionButton = function () {
+  console.log("next question button clicked!");
 
-  userInfo.currentQuestionNumber += 1;
+  if (currentSelections.length < 1) return;
 
-  saveUserInfo(userInfo);
-
-  return;
+  saveAnswers();
+  if (determineIsQuizOver(currentQuestion)) {
+    console.log("Quiz is over.");
+    console.log("savedAnswers :>> ", savedAnswers);
+    resultTribe = calculateResults(savedAnswers);
+    buildResultsHTML();
+  } else {
+    currentQuestion += 1;
+    buildQuizHTML();
+  }
 };
 
-const markQuizComplete = () => {
-  let userInfo = getUserInfo();
+const saveAnswers = function () {
+  savedAnswers[currentQuestion] = currentSelections;
 
-  userInfo.inProgress = false;
-
-  saveUserInfo(userInfo);
-
-  return;
+  currentSelections = [];
 };
 
-appStart();
+const handleStartQuiz = function () {
+  console.log("start quiz button pressed.");
+
+  let nameInput = document.querySelector("#nameInput");
+
+  if (!nameInput.value) return;
+
+  usersName = nameInput.value.trim();
+
+  buildQuizHTML();
+};
+
+const startApp = function () {
+  appContainerDiv.innerHTML = splashHTML;
+  startButton = document.querySelector("#startButton");
+  startButton.addEventListener("click", () => handleStartQuiz());
+};
+
+const getCurrentQuestionFromTemplate = function () {
+  return questions.find((question) => question.id === currentQuestion);
+};
+
+startApp();
