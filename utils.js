@@ -78,8 +78,6 @@ export const determineIsQuizOver = function (currentQuestion) {
 };
 
 export const calculateResults = function (savedAnswers) {
-  console.log("calculating results!");
-
   let pointsTracker = {
     bardur: 0,
     aimo: 0,
@@ -99,52 +97,28 @@ export const calculateResults = function (savedAnswers) {
     cymanti: 0,
   };
 
-  // for each question in questions.js (also iterate with index as well)
-  //    save the user's answers to that question in variable userAnswers[]
-  //    for each of the user's answers to current question
-  //      for each positive tribe for this answer choice
-  //        add 1 to tribe in pointsTracker
-  //      for each negative tribe for this answer choice
-  //        minus 1 from tribe in pointsTracker
-  // calculate max tribe in pointsTracker
-
-  // for each question in questions.js (also iterate with index as well)
-
   for (let i = 1; i <= questions.length; i++) {
     let question = questions.find(
       (questionTemplate) => questionTemplate.id === i
     );
-    console.log("question :>> ", question);
-    //    save the user's answers to that question in variable userAnswers[]
     let userAnswers = savedAnswers[i];
-    console.log("savedAnswers :>> ", savedAnswers);
-    console.log("userAnswers :>> ", userAnswers);
-    //    for each of the user's answers to current question
+
     for (let userAnswer of userAnswers) {
-      console.log("userAnswer :>> ", userAnswer);
-      //console.log("question.answers :>> ", question.answers);
       let answerTemplate = question.answers.find((answerObject) => {
         if (answerObject.id === userAnswer) return answerObject;
       });
-      console.log("answerTemplate :>> ", answerTemplate);
       if (answerTemplate.positiveTribes.length > 0) {
-        //      for each positive tribe for this answer choice
         for (let posTribe of answerTemplate.positiveTribes) {
-          //        add 1 to tribe in pointsTracker
           pointsTracker[posTribe] = pointsTracker[posTribe] + 1;
         }
       }
       if (answerTemplate.negativeTribes.length > 0) {
-        //      for each negative tribe for this answer choice
         for (let negTribe of answerTemplate.negativeTribes) {
-          //        minus 1 from tribe in pointsTracker
           pointsTracker[negTribe] = pointsTracker[negTribe] - 1;
         }
       }
     }
   }
-  // calculate max tribe in pointsTracker
-  console.log("pointsTracker :>> ", pointsTracker);
   return calculateMax(pointsTracker);
 };
 
@@ -159,6 +133,5 @@ const calculateMax = function (pointsTracker) {
     }
   }
 
-  console.log("maxTribe :>> ", maxTribe);
   return maxTribe;
 };

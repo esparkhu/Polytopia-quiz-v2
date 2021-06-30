@@ -91,7 +91,9 @@ const buildQuizHTML = function () {
     id: "nextQuestionButton",
     classes: ["cute-button"],
   });
-  buttonEl.innerText = "Next Question";
+  buttonEl.innerText = determineIsQuizOver(currentQuestion)
+    ? "Submit Quiz"
+    : "Next Question";
 
   buttonContainerDiv.appendChild(buttonEl);
 
@@ -112,7 +114,6 @@ const buildQuizHTML = function () {
 };
 
 const handleSelectAnswer = function (evt) {
-  console.log("evt.target.id :>> ", evt.target.id);
   const target = evt.target.id;
   if (target === "answersContainer") return;
 
@@ -123,7 +124,6 @@ const handleSelectAnswer = function (evt) {
       currentSelections = [];
       currentSelections.push(target);
     }
-    console.log("currentSelections after selecting :>> ", currentSelections);
   }
 
   if (currentQuestionType === "pickAny") {
@@ -140,12 +140,10 @@ const handleSelectAnswer = function (evt) {
     } else {
       currentSelections.push(target);
     }
-    console.log("currentSelections after selecting :>> ", currentSelections);
   }
 
   // iterate through currentSelections, adding or removing the selected class to classList as necessary
   let answersContainer = document.querySelector("#answersContainer");
-  console.log("answersContainer :>> ", answersContainer);
 
   for (let child of answersContainer.children) {
     if (!currentSelections.includes(child.id)) {
@@ -160,9 +158,6 @@ const handleSelectAnswer = function (evt) {
 };
 
 const buildResultsHTML = function () {
-  console.log("built the quiz!");
-  console.log("savedAnswers :>> ", savedAnswers);
-
   let setContainerDiv = makeElement({
     element: "div",
     id: "setContainer",
@@ -228,11 +223,10 @@ const buildResultsHTML = function () {
 
   appContainerDiv.innerHTML = "";
   appContainerDiv.appendChild(setContainerDiv);
+  window.scrollTo(0, 0);
 };
 
 const handleNextQuestionButton = function () {
-  console.log("next question button clicked!");
-
   if (currentSelections.length < 1) return;
 
   saveAnswers();
@@ -254,8 +248,6 @@ const saveAnswers = function () {
 };
 
 const handleStartQuiz = function () {
-  console.log("start quiz button pressed.");
-
   let nameInput = document.querySelector("#nameInput");
 
   if (!nameInput.value) return;
