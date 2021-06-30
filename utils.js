@@ -69,6 +69,7 @@ export const fancyTribeConversion = {
   xinxi: "Xin-xi",
   hoodrick: "Hoodrick",
   yadakk: "Yadakk",
+  cymanti: "Cymanti",
 };
 
 export const determineIsQuizOver = function (currentQuestion) {
